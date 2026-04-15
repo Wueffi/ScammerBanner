@@ -1,4 +1,7 @@
 import os
+import operator
+import collections.abc
+
 from dotenv import load_dotenv
 
 load_dotenv()
