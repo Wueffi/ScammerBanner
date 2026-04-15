@@ -6,14 +6,7 @@ import collections.abc
 from discord import ButtonStyle, Button
 from discord.ui import View, Modal, TextInput
 
-from config import TEMPBAN_ROLE_NAME
-
-
-operations: dict[collections.abc.Callable[[int, int], int], str] = {
-    operator.add: "{a} + {b}",
-    operator.sub: "{a} - {b}",
-    operator.mul: "{a} * {b}",
-}
+from config import TEMPBAN_ROLE_NAME, CAPTCHA_OPERATIONS
 
 
 def choose_op[K, V](mapping: dict[K, V]) -> tuple[K, V]:
@@ -29,7 +22,7 @@ class CaptchaModal(Modal):
 
         self.a = random.randint(0, 10)
         self.b = random.randint(0, 10)
-        operation, string = choose_op(operations)
+        operation, string = choose_op(CAPTCHA_OPERATIONS)
         
         self.correct = operation(a, b)
         self.member = member
