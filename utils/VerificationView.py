@@ -16,7 +16,7 @@ operations: dict[collections.abc.Callable[[int, int], int], str] = {
 }
 
 
-def dchoicet[K, V](mapping: dict[K, V]) -> tuple[K, V]:
+def choose_op[K, V](mapping: dict[K, V]) -> tuple[K, V]:
     lenght = len(mapping) - 1
     keys = list(mapping.keys())
     key = keys[random.randint(0, lenght)
@@ -29,7 +29,7 @@ class CaptchaModal(Modal):
 
         self.a = random.randint(0, 10)
         self.b = random.randint(0, 10)
-        operation, string = dchoicet(operations)
+        operation, string = choose_op(operations)
         
         self.correct = operation(a, b)
         self.member = member
