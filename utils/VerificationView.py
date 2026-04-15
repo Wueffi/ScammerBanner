@@ -34,7 +34,7 @@ class CaptchaModal(Modal):
         self.correct = operation(a, b)
         self.member = member
         self.temp_role = temp_role
-        self.answer = TextInput(label=f"What is {string.format(a=self.a, b=self.b)?", placeholder="Enter a number", required=True)
+        self.answer = TextInput(label=f"What is {string.format(a=self.a, b=self.b)}?", placeholder="Enter a number", required=True)
         self.add_item(self.answer)
 
     async def on_submit(self, interaction: discord.Interaction):
