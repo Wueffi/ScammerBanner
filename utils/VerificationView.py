@@ -1,7 +1,6 @@
 import discord
 import random
-import operator
-import collections.abc
+
 
 from discord import ButtonStyle, Button
 from discord.ui import View, Modal, TextInput
