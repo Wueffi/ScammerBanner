@@ -30,6 +30,10 @@ class MessageListener:
             return
 
         member = message.author
+
+        if isinstance(member, discord.Member) and member.guild_permissions.ban_members:
+            return
+
         now = time.time()
         uid = message.author.id
 
@@ -50,10 +54,6 @@ class MessageListener:
         matches = INVITE_REGEX.findall(message.content)
         if not matches:
             return
-
-        if isinstance(member, discord.Member): # This is a proper Moderator / Admin Check actually
-            if member.guild_permissions.ban_members:
-                return
 
         invite = matches[0].replace("https://", "").replace("http://", "")
 
