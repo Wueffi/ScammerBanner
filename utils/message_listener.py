@@ -13,7 +13,10 @@ from utils.InviteLogView import InviteLogView
 from utils.invite_store import load_invites, save_invites
 
 log = logging.getLogger("bot.message_listener")
-INVITE_REGEX = re.compile(r"(discord\.gg/[a-zA-Z0-9]+|discord\.com/invite/[a-zA-Z0-9]+)")
+INVITE_REGEX = re.compile(
+    r"(?:https?://)?(?:www\.|canary\.|ptb\.)?discord(?:\.gg|(?:app)?\.com/invite|\.me)/([A-Za-z0-9-]+)",
+    re.IGNORECASE
+)
 
 class MessageListener:
     def __init__(self, bot):
@@ -33,7 +36,7 @@ class MessageListener:
 
         if isinstance(member, discord.Member) and member.guild_permissions.ban_members:
             return
-
+        
         now = time.time()
         uid = message.author.id
 
@@ -55,7 +58,7 @@ class MessageListener:
         if not matches:
             return
 
-        invite = matches[0].replace("https://", "").replace("http://", "")
+        invite = matches[0]
 
         self.user_flags[uid].append(now)
         self.user_flags[uid] = [t for t in self.user_flags[uid] if now - t <= 60]
@@ -74,6 +77,12 @@ class MessageListener:
     async def punish(self, message: discord.Message, reason: str, invite: str):
         guild = message.guild
         member = message.author
+        
+        try:
+            timeout_until = discord.utils.utcnow() + datetime.timedelta(minutes=5)
+            await member.timeout(timeout_until, reason=reason)
+        except Exception as e:
+            log.error(f"Timeout failed: {e}")
 
         files = await self._download_attachments(message) if message.attachments else []
 
