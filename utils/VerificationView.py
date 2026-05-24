@@ -1,9 +1,18 @@
 import discord
 import random
+
+
 from discord import ButtonStyle, Button
 from discord.ui import View, Modal, TextInput
 
-from config import TEMPBAN_ROLE_NAME
+from config import TEMPBAN_ROLE_NAME, CAPTCHA_OPERATIONS
+
+
+def choose_op[K, V](mapping: dict[K, V]) -> tuple[K, V]:
+    lenght = len(mapping) - 1
+    keys = list(mapping.keys())
+    key = keys[random.randint(0, lenght)
+    return key, mapping[key]
 
 
 class CaptchaModal(Modal):
@@ -12,10 +21,12 @@ class CaptchaModal(Modal):
 
         self.a = random.randint(0, 10)
         self.b = random.randint(0, 10)
-        self.correct = self.a + self.b
+        operation, string = choose_op(CAPTCHA_OPERATIONS)
+        
+        self.correct = operation(a, b)
         self.member = member
         self.temp_role = temp_role
-        self.answer = TextInput(label=f"What is {self.a} + {self.b}?", placeholder="Enter a number", required=True)
+        self.answer = TextInput(label=f"What is {string.format(a=self.a, b=self.b)}?", placeholder="Enter a number", required=True)
         self.add_item(self.answer)
 
     async def on_submit(self, interaction: discord.Interaction):

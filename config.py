@@ -1,4 +1,7 @@
 import os
+import operator
+import collections.abc
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -23,3 +26,12 @@ TEMPBAN_CHANNEL_WELCOME: str = os.getenv(
         "Your access to the rest of this server has been suspended. Please confirm you are not a bot by clicking the button below."
     ),
 )
+
+# Not defined in `.env`, as it would be unnecessary to do all the conversion to dicts
+# and the conversion of the callables just for this simple feature (which is probably
+# not gonna be changed anyways).
+CAPTCHA_OPERATIONS: dict[collections.abc.Callable[[int, int], int], str] = {
+    operator.add: "{a} + {b}",
+    operator.sub: "{a} - {b}",
+    operator.mul: "{a} * {b}",
+}
